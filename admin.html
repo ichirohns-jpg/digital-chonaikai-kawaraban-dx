@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>デジタル町内会瓦版DX 操作盤</title>
+
+<meta name="theme-color" content="#0f766e">
+
+<style>
+
+*{
+ box-sizing:border-box;
+}
+
+body{
+ margin:0;
+ font-family:
+ "Hiragino Sans",
+ "Yu Gothic",
+ "Meiryo",
+ sans-serif;
+ background:
+ linear-gradient(180deg,#ecfeff 0%,#f7fee7 100%);
+ color:#102a24;
+ line-height:1.7;
+ -webkit-text-size-adjust:100%;
+}
+
+button,
+input,
+textarea,
+select{
+ font-family:inherit;
+}
+
+.wrap{
+ max-width:920px;
+ margin:auto;
+ padding:16px;
+ padding-bottom:70px;
+}
+
+.header{
+ background:
+ linear-gradient(135deg,#0f766e,#16a34a);
+ color:#fff;
+ border-radius:28px;
+ padding:24px 18px;
+ box-shadow:0 12px 32px rgba(15,118,110,.22);
+}
+
+.header h1{
+ margin:0;
+ font-size:30px;
+ line-height:1.25;
+ font-weight:900;
+}
+
+.header p{
+ margin:10px 0 0;
+ font-size:16px;
+ font-weight:800;
+ color:#ecfeff;
+}
+
+.card{
+ margin-top:16px;
+ background:#fff;
+ border-radius:26px;
+ padding:18px;
+ box-shadow:0 10px 28px rgba(15,118,110,.12);
+ border:1px solid #ccfbf1;
+}
+
+.card h2{
+ margin:0 0 12px;
+ color:#0f766e;
+ font-size:24px;
+ line-height:1.3;
+ font-weight:900;
+}
+
+.card h3{
+ margin:0 0 10px;
+ color:#14532d;
+ font-size:20px;
+ font-weight:900;
+}
+
+label{
+ display:block;
+ margin:12px 0 6px;
+ color:#134e4a;
+ font-weight:900;
+ font-size:16px;
+}
+
+input,
+textarea,
+select{
+ width:100%;
+ border:2px solid #99f6e4;
+ border-radius:18px;
+ padding:13px 14px;
+ font-size:17px;
+ color:#102a24;
+ background:#fff;
+ outline:none;
+}
+
+textarea{
+ min-height:130px;
+ resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+ border-color:#14b8a6;
+ box-shadow:0 0 0 4px rgba(20,184,166,.16);
+}
+
+.row2{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:12px;
+}
+
+.btn{
+ width:100%;
+ border:0;
+ border-radius:20px;
+ padding:15px 16px;
+ font-size:18px;
+ font-weight:900;
+ cursor:pointer;
+ text-align:center;
+ box-shadow:0 8px 20px rgba(0,0,0,.12);
+}
+
+.btnPrimary{
+ background:#facc15;
+ color:#422006;
+}
+
+.btnGreen{
+ background:#16a34a;
+ color:#fff;
+}
+
+.btnTeal{
+ background:#0f766e;
+ color:#fff;
+}
+
+.btnBlue{
+ background:#2563eb;
+ color:#fff;
+}
+
+.btnWhite{
+ background:#fff;
+ color:#0f766e;
+ border:2px solid #99f6e4;
+ box-shadow:none;
+}
+
+.btnDanger{
+ background:#fee2e2;
+ color:#991b1b;
+ box-shadow:none;
+}
+
+.btn:disabled{
+ opacity:.55;
+ cursor:not-allowed;
+}
+
+.loginBox{
+ max-width:520px;
+ margin:20px auto 0;
+}
+
+.adminArea{
+ display:none;
+}
+
+.adminArea.show{
+ display:block;
+}
+
+.status{
+ display:none;
+ margin-top:14px;
+ padding:14px;
+ border-radius:18px;
+ font-weight:900;
+ background:#dcfce7;
+ color:#14532d;
+ border:1px solid #86efac;
+}
+
+.status.show{
+ display:block;
+}
+
+.status.error{
+ background:#fee2e2;
+ color:#991b1b;
+ border-color:#fecaca;
+}
+
+.notice{
+ margin-top:12px;
+ background:#fffbeb;
+ color:#713f12;
+ border:1px solid #fde68a;
+ padding:13px;
+ border-radius:18px;
+ font-weight:850;
+}
+
+.townGrid{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:10px;
+ margin-top:10px;
+}
+
+.townBtn{
+ border:2px solid #99f6e4;
+ background:#f0fdfa;
+ color:#134e4a;
+ border-radius:18px;
+ padding:13px;
+ font-size:16px;
+ font-weight:900;
+ cursor:pointer;
+ text-align:left;
+}
+
+.townBtn.active{
+ background:#0f766e;
+ color:#fff;
+ border-color:#0f766e;
+}
+
+.townBtn.off{
+ opacity:.45;
+}
+
+.selectedBox{
+ margin-top:12px;
+ padding:13px;
+ border-radius:18px;
+ background:#ecfdf5;
+ border:1px solid #bbf7d0;
+ color:#14532d;
+ font-weight:900;
+}
+
+.preview{
+ background:#f8fafc;
+ border:2px solid #e2e8f0;
+ border-radius:24px;
+ padding:16px;
+ margin-top:14px;
+}
+
+.previewTitle{
+ color:#0f766e;
+ font-size:26px;
+ line-height:1.3;
+ font-weight:900;
+ margin:0;
+}
+
+.previewMeta{
+ margin-top:8px;
+ color:#64748b;
+ font-size:15px;
+ font-weight:850;
+}
+
+.previewSummary{
+ margin-top:12px;
+ background:#ecfeff;
+ border-left:6px solid #14b8a6;
+ border-radius:14px;
+ padding:12px;
+ color:#134e4a;
+ font-size:18px;
+ font-weight:900;
+ white-space:pre-wrap;
+}
+
+.previewBody{
+ margin-top:12px;
+ color:#102a24;
+ font-size:19px;
+ line-height:1.85;
+ font-weight:780;
+ white-space:pre-wrap;
+}
+
+.urlLink{
+ word-break:break-all;
+ color:#2563eb;
+ font-weight:900;
+}
+
+.small{
+ font-size:13px;
+ color:#64748b;
+ font-weight:800;
+}
+
+.tabMenu{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-top:16px;
+}
+
+.tabBtn{
+ border:0;
+ border-radius:18px;
+ padding:13px;
+ font-size:16px;
+ font-weight:900;
+ background:#e2e8f0;
+ color:#334155;
+ cursor:pointer;
+}
+
+.tabBtn.active{
+ background:#0f766e;
+ color:#fff;
+}
+
+.tabPage{
+ display:none;
+}
+
+.tabPage.show{
+ display:block;
+}
+
+@media (min-width:760px){
+
+ .row2{
+  grid-template-columns:1fr 1fr;
+ }
+
+ .townGrid{
+  grid-template-columns:repeat(2,1fr);
+ }
+
+ .tabMenu{
+  grid-template-columns:repeat(4,1fr);
+ }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<header class="header">
+ <h1>デジタル町内会瓦版DX</h1>
+ <p>貞一郎さん操作盤｜市役所LINE情報を町内会ごとの瓦版へ流す画面</p>
+</header>
+
+<section id="loginArea" class="card loginBox">
+ <h2>操作盤ログイン</h2>
+
+ <label for="pin">暗証番号</label>
+ <input id="pin" type="password" inputmode="numeric" placeholder="暗証番号を入力">
+
+ <button class="btn btnTeal" type="button" onclick="login()" style="margin-top:14px;">
+  ログイン
+ </button>
+
+ <div id="loginStatus" class="status"></div>
+
+ <div class="notice">
+  操作できるのは、信用できる協力者だけです。市役所LINEなどの公式情報を、町内会向けに見やすく整理して流します。
+ </div>
+</section>
+
+<section id="adminArea" class="adminArea">
+
+ <div class="tabMenu">
+  <button class="tabBtn active" type="button" onclick="showTab('postTab')">
+   お知らせ
+  </button>
+
+  <button class="tabBtn" type="button" onclick="showTab('videoTab')">
+   動画
+  </button>
+
+  <button class="tabBtn" type="button" onclick="showTab('imageTab')">
+   画像
+  </button>
+
+  <button class="tabBtn" type="button" onclick="showTab('helpTab')">
+   使い方
+  </button>
+ </div>
+
+ <section id="postTab" class="tabPage show">
+
+  <div class="card">
+   <h2>市役所LINE情報を投稿</h2>
+
+   <div class="row2">
+    <div>
+     <label for="author">投稿者</label>
+     <select id="author">
+      <option value="山口貞一郎">山口貞一郎</option>
+      <option value="協力者">協力者</option>
+     </select>
+    </div>
+
+    <div>
+     <label for="status">公開状態</label>
+     <select id="status">
+      <option value="公開">公開</option>
+      <option value="下書き">下書き</option>
+      <option value="非公開">非公開</option>
+     </select>
+    </div>
+   </div>
+
+   <label for="rawLine">市役所LINEの文章</label>
+   <textarea id="rawLine" placeholder="ここに市役所LINEの文章を貼り付け"></textarea>
+
+   <button class="btn btnPrimary" type="button" onclick="makeDraft()" style="margin-top:12px;">
+    瓦版用に整える
+   </button>
+
+   <label for="title">タイトル</label>
+   <input id="title" type="text" placeholder="例：職員座談会 参加者募集中">
+
+   <div class="row2">
+    <div>
+     <label for="category">分類</label>
+     <select id="category">
+      <option value="市役所からのお知らせ">市役所からのお知らせ</option>
+      <option value="防災情報">防災情報</option>
+      <option value="ごみ">ごみ</option>
+      <option value="健康・福祉">健康・福祉</option>
+      <option value="子育て">子育て</option>
+      <option value="道路・工事">道路・工事</option>
+      <option value="イベント">イベント</option>
+      <option value="地域のお知らせ">地域のお知らせ</option>
+      <option value="重要なお知らせ">重要なお知らせ</option>
+     </select>
+    </div>
+
+    <div>
+     <label for="priority">重要度</label>
+     <select id="priority">
+      <option value="通常">通常</option>
+      <option value="重要">重要</option>
+      <option value="緊急">緊急</option>
+     </select>
+    </div>
+   </div>
+
+   <label for="summary">要点</label>
+   <textarea id="summary" placeholder="日時、場所、対象、締切などを大きく見やすく整理"></textarea>
+
+   <label for="body">本文</label>
+   <textarea id="body" placeholder="町内会ページで大きな文字で表示する本文"></textarea>
+
+   <label for="officialUrl">市公式URL</label>
+   <input id="officialUrl" type="url" placeholder="https://">
+
+   <div class="row2">
+    <div>
+     <label for="startDate">掲載開始日</label>
+     <input id="startDate" type="date">
+    </div>
+
+    <div>
+     <label for="endDate">掲載終了日</label>
+     <input id="endDate" type="date">
+    </div>
+   </div>
+
+   <label for="memo">備考</label>
+   <input id="memo" type="text" placeholder="任意">
+
+  </div>
+
+  <div class="card">
+   <h2>配信先町内会</h2>
+
+   <button class="btn btnWhite" type="button" onclick="selectAllTowns()">
+    全町内会を選ぶ
+   </button>
+
+   <button class="btn btnWhite" type="button" onclick="clearTowns()" style="margin-top:8px;">
+    選択を外す
+   </button>
+
+   <div id="townGrid" class="townGrid"></div>
+
+   <div class="selectedBox">
+    選択中：<span id="selectedTownText">未選択</span>
+   </div>
+  </div>
+
+  <div class="card">
+   <h2>表示プレビュー</h2>
+
+   <div class="preview">
+    <p id="previewTitle" class="previewTitle">タイトルが入ります</p>
+    <div id="previewMeta" class="previewMeta">分類・日付</div>
+    <div id="previewSummary" class="previewSummary">要点が入ります</div>
+    <div id="previewBody" class="previewBody">本文が入ります</div>
+    <div id="previewUrl" class="urlLink"></div>
+   </div>
+
+   <button class="btn btnGreen" type="button" onclick="savePost()" style="margin-top:14px;">
+    この内容で公開・保存
+   </button>
+
+   <button class="btn btnDanger" type="button" onclick="clearPostForm()" style="margin-top:10px;">
+    入力をクリア
+   </button>
+
+   <div id="postStatus" class="status"></div>
+  </div>
+
+ </section>
+
+ <section id="videoTab" class="tabPage">
+
+  <div class="card">
+   <h2>お楽しみ動画を登録</h2>
+
+   <label for="videoTitle">動画タイトル</label>
+   <input id="videoTitle" type="text" placeholder="例：座ってできる健康体操">
+
+   <label for="videoDescription">説明</label>
+   <textarea id="videoDescription" placeholder="病院の待ち時間や、ちょっとした時間にどうぞ。"></textarea>
+
+   <label for="youtubeUrl">YouTube URL</label>
+   <input id="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=...">
+
+   <label for="videoCategory">分類</label>
+   <select id="videoCategory">
+    <option value="お楽しみ動画">お楽しみ動画</option>
+    <option value="健康体操">健康体操</option>
+    <option value="懐かし動画">懐かし動画</option>
+    <option value="地域動画">地域動画</option>
+    <option value="防災動画">防災動画</option>
+    <option value="市役所関連動画">市役所関連動画</option>
+   </select>
+
+   <label for="videoStatus">公開状態</label>
+   <select id="videoStatus">
+    <option value="公開">公開</option>
+    <option value="下書き">下書き</option>
+    <option value="非公開">非公開</option>
+   </select>
+
+   <label for="videoOrder">表示順</label>
+   <input id="videoOrder" type="number" value="1">
+
+   <h3 style="margin-top:18px;">配信先町内会</h3>
+   <div id="videoTownGrid" class="townGrid"></div>
+
+   <button class="btn btnGreen" type="button" onclick="saveVideo()" style="margin-top:14px;">
+    動画を保存
+   </button>
+
+   <div id="videoStatusBox" class="status"></div>
+  </div>
+
+ </section>
+
+ <section id="imageTab" class="tabPage">
+
+  <div class="card">
+   <h2>画像・チラシ画像を登録</h2>
+
+   <label for="imageTitle">画像タイトル</label>
+   <input id="imageTitle" type="text" placeholder="例：防災訓練のお知らせ画像">
+
+   <label for="imageUrl">画像URL</label>
+   <input id="imageUrl" type="url" placeholder="https://">
+
+   <label for="imageDescription">説明</label>
+   <textarea id="imageDescription" placeholder="画像の説明を入れてください。"></textarea>
+
+   <label for="imageCategory">分類</label>
+   <select id="imageCategory">
+    <option value="画像">画像</option>
+    <option value="チラシ">チラシ</option>
+    <option value="告知画像">告知画像</option>
+    <option value="地域のお知らせ">地域のお知らせ</option>
+   </select>
+
+   <label for="imageStatus">公開状態</label>
+   <select id="imageStatus">
+    <option value="公開">公開</option>
+    <option value="下書き">下書き</option>
+    <option value="非公開">非公開</option>
+   </select>
+
+   <label for="imageOrder">表示順</label>
+   <input id="imageOrder" type="number" value="1">
+
+   <h3 style="margin-top:18px;">配信先町内会</h3>
+   <div id="imageTownGrid" class="townGrid"></div>
+
+   <button class="btn btnGreen" type="button" onclick="saveImage()" style="margin-top:14px;">
+    画像を保存
+   </button>
+
+   <div id="imageStatusBox" class="status"></div>
+  </div>
+
+ </section>
+
+ <section id="helpTab" class="tabPage">
+
+  <div class="card">
+   <h2>使い方</h2>
+
+   <div class="notice">
+    この操作盤は、市役所LINEなどの公式情報を、町内会ごとの見やすい瓦版に流すための画面です。
+   </div>
+
+   <p>
+    1. 市役所LINEの文章を貼ります。<br>
+    2. 「瓦版用に整える」を押します。<br>
+    3. タイトル、要点、本文を確認します。<br>
+    4. 配信先町内会を選びます。<br>
+    5. 「この内容で公開・保存」を押します。
+   </p>
+
+   <h3>扱う情報</h3>
+   <p>
+    市役所からのお知らせ、防災、ごみ、健康、福祉、子育て、道路工事、イベント、注意喚起など。
+   </p>
+
+   <h3>扱わない情報</h3>
+   <p>
+    個人情報、町内会費、申込書、苦情、名簿、要支援者情報は扱いません。
+   </p>
+
+  </div>
+
+ </section>
+
+</section>
+
+</div>
+
+<script>
+
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycby1L1-dHmf_5GZkIRZcr-pp_tBxkEAe-cvQrQzkbYP_D_CbbWAsPgR4kuTXoIjlmOsgeA/exec";
+
+let ADMIN_PIN = "";
+let towns = [];
+let selectedTowns = [];
+let selectedVideoTowns = [];
+let selectedImageTowns = [];
+
+function qs(id){
+ return document.getElementById(id);
+}
+
+function showStatus(id,message,isError){
+
+ const el =
+ qs(id);
+
+ if(!el){
+  return;
+ }
+
+ el.textContent = message;
+ el.className =
+ "status show" + (isError ? " error" : "");
+
+}
+
+function callGAS(params,callback){
+
+ const url =
+ GAS_URL +
+ "?" +
+ new URLSearchParams(params).toString();
+
+ fetch(url)
+ .then(function(res){
+  return res.json();
+ })
+ .then(function(data){
+  callback(data);
+ })
+ .catch(function(err){
+  callback({
+   ok:false,
+   error:String(err)
+  });
+ });
+
+}
+
+function login(){
+
+ const pin =
+ qs("pin").value.trim();
+
+ if(!pin){
+  showStatus("loginStatus","暗証番号を入力してください",true);
+  return;
+ }
+
+ callGAS(
+  {
+   mode:"checkAdmin",
+   pin:pin
+  },
+  function(data){
+
+   if(!data.ok || !data.admin){
+    showStatus("loginStatus",data.message || "ログインできません",true);
+    return;
+   }
+
+   ADMIN_PIN = pin;
+
+   qs("loginArea").style.display = "none";
+   qs("adminArea").classList.add("show");
+
+   loadTowns();
+
+  }
+ );
+
+}
+
+function loadTowns(){
+
+ callGAS(
+  {
+   mode:"getTowns",
+   includeAll:"1"
+  },
+  function(data){
+
+   if(!data.ok){
+    alert("町内会一覧を読み込めません");
+    return;
+   }
+
+   towns =
+   data.towns || [];
+
+   if(!towns.length){
+    towns = [
+     {
+      townId:"test",
+      町内会名:"試験運転町内会",
+      利用状態:"active"
+     }
+    ];
+   }
+
+   renderTownButtons();
+
+  }
+ );
+
+}
+
+function renderTownButtons(){
+
+ renderTownGrid(
+  "townGrid",
+  selectedTowns,
+  function(id){
+   toggleTown(selectedTowns,id);
+   updateSelectedText();
+   renderTownButtons();
+  }
+ );
+
+ renderTownGrid(
+  "videoTownGrid",
+  selectedVideoTowns,
+  function(id){
+   toggleTown(selectedVideoTowns,id);
+   renderTownButtons();
+  }
+ );
+
+ renderTownGrid(
+  "imageTownGrid",
+  selectedImageTowns,
+  function(id){
+   toggleTown(selectedImageTowns,id);
+   renderTownButtons();
+  }
+ );
+
+ updateSelectedText();
+
+}
+
+function renderTownGrid(gridId,selectedList,onClick){
+
+ const grid =
+ qs(gridId);
+
+ if(!grid){
+  return;
+ }
+
+ grid.innerHTML = "";
+
+ const allBtn =
+ document.createElement("button");
+
+ allBtn.type = "button";
+ allBtn.className =
+ "townBtn" + (selectedList.indexOf("all") !== -1 ? " active" : "");
+
+ allBtn.textContent =
+ "全町内会";
+
+ allBtn.onclick = function(){
+  onClick("all");
+ };
+
+ grid.appendChild(allBtn);
+
+ towns.forEach(function(town){
+
+  const townId =
+  String(town.townId || "").trim();
+
+  const name =
+  String(town["町内会名"] || town.name || townId).trim();
+
+  const status =
+  String(town["利用状態"] || town.status || "").trim();
+
+  if(!townId){
+   return;
+  }
+
+  const btn =
+  document.createElement("button");
+
+  btn.type = "button";
+  btn.className =
+  "townBtn" +
+  (selectedList.indexOf(townId) !== -1 ? " active" : "") +
+  (status !== "active" ? " off" : "");
+
+  btn.textContent =
+  name +
+  (status !== "active" ? "（準備中）" : "");
+
+  btn.onclick = function(){
+   onClick(townId);
+  };
+
+  grid.appendChild(btn);
+
+ });
+
+}
+
+function toggleTown(list,id){
+
+ const index =
+ list.indexOf(id);
+
+ if(index === -1){
+
+  if(id === "all"){
+   list.length = 0;
+   list.push("all");
+   return;
+  }
+
+  const allIndex =
+  list.indexOf("all");
+
+  if(allIndex !== -1){
+   list.splice(allIndex,1);
+  }
+
+  list.push(id);
+
+ }else{
+
+  list.splice(index,1);
+
+ }
+
+}
+
+function updateSelectedText(){
+
+ const text =
+ selectedTowns.length
+ ? selectedTowns.map(getTownName).join("、")
+ : "未選択";
+
+ qs("selectedTownText").textContent =
+ text;
+
+}
+
+function getTownName(id){
+
+ if(id === "all"){
+  return "全町内会";
+ }
+
+ const town =
+ towns.find(function(item){
+  return String(item.townId) === String(id);
+ });
+
+ if(!town){
+  return id;
+ }
+
+ return town["町内会名"] || id;
+
+}
+
+function selectAllTowns(){
+
+ selectedTowns = ["all"];
+ renderTownButtons();
+
+}
+
+function clearTowns(){
+
+ selectedTowns = [];
+ renderTownButtons();
+
+}
+
+function makeDraft(){
+
+ const raw =
+ qs("rawLine").value.trim();
+
+ if(!raw){
+  alert("市役所LINEの文章を貼ってください");
+  return;
+ }
+
+ const lines =
+ raw
+ .split(/\n/)
+ .map(function(line){
+  return line.trim();
+ })
+ .filter(Boolean);
+
+ const title =
+ lines[0] || "市役所からのお知らせ";
+
+ qs("title").value =
+ title;
+
+ const summaryLines = [];
+
+ lines.forEach(function(line){
+
+  if(
+   line.indexOf("日時") !== -1 ||
+   line.indexOf("とき") !== -1 ||
+   line.indexOf("場所") !== -1 ||
+   line.indexOf("ところ") !== -1 ||
+   line.indexOf("対象") !== -1 ||
+   line.indexOf("定員") !== -1 ||
+   line.indexOf("申込") !== -1 ||
+   line.indexOf("締切") !== -1 ||
+   line.indexOf("持ち物") !== -1
+  ){
+   summaryLines.push(line);
+  }
+
+ });
+
+ qs("summary").value =
+ summaryLines.length
+ ? summaryLines.join("\n")
+ : "詳しい日時・場所・対象などは本文をご確認ください。";
+
+ qs("body").value =
+ raw;
+
+ updatePreview();
+
+}
+
+function updatePreview(){
+
+ qs("previewTitle").textContent =
+ qs("title").value.trim() || "タイトルが入ります";
+
+ qs("previewMeta").textContent =
+ (qs("category").value || "分類") +
+ " / " +
+ new Date().toLocaleDateString("ja-JP");
+
+ qs("previewSummary").textContent =
+ qs("summary").value.trim() || "要点が入ります";
+
+ qs("previewBody").textContent =
+ qs("body").value.trim() || "本文が入ります";
+
+ const url =
+ qs("officialUrl").value.trim();
+
+ qs("previewUrl").textContent =
+ url ? "詳しくはこちら：" + url : "";
+
+}
+
+[
+ "title",
+ "category",
+ "summary",
+ "body",
+ "officialUrl"
+].forEach(function(id){
+
+ document.addEventListener(
+  "input",
+  function(e){
+
+   if(e.target && e.target.id === id){
+    updatePreview();
+   }
+
+  }
+ );
+
+});
+
+function savePost(){
+
+ if(!ADMIN_PIN){
+  alert("ログインしてください");
+  return;
+ }
+
+ if(!qs("title").value.trim()){
+  alert("タイトルを入力してください");
+  return;
+ }
+
+ if(!selectedTowns.length){
+  alert("配信先町内会を選んでください");
+  return;
+ }
+
+ const params =
+ {
+  mode:"savePost",
+  pin:ADMIN_PIN,
+  author:qs("author").value,
+  title:qs("title").value,
+  category:qs("category").value,
+  summary:qs("summary").value,
+  body:qs("body").value,
+  officialUrl:qs("officialUrl").value,
+  targets:selectedTowns.join(","),
+  status:qs("status").value,
+  priority:qs("priority").value,
+  startDate:qs("startDate").value,
+  endDate:qs("endDate").value,
+  memo:qs("memo").value
+ };
+
+ callGAS(
+  params,
+  function(data){
+
+   if(!data.ok){
+    showStatus("postStatus",data.error || "保存に失敗しました",true);
+    return;
+   }
+
+   showStatus("postStatus","保存しました",false);
+
+  }
+ );
+
+}
+
+function saveVideo(){
+
+ if(!ADMIN_PIN){
+  alert("ログインしてください");
+  return;
+ }
+
+ if(!qs("videoTitle").value.trim()){
+  alert("動画タイトルを入力してください");
+  return;
+ }
+
+ if(!qs("youtubeUrl").value.trim()){
+  alert("YouTube URLを入力してください");
+  return;
+ }
+
+ if(!selectedVideoTowns.length){
+  alert("配信先町内会を選んでください");
+  return;
+ }
+
+ callGAS(
+  {
+   mode:"saveVideo",
+   pin:ADMIN_PIN,
+   author:qs("author").value,
+   title:qs("videoTitle").value,
+   description:qs("videoDescription").value,
+   youtubeUrl:qs("youtubeUrl").value,
+   category:qs("videoCategory").value,
+   targets:selectedVideoTowns.join(","),
+   status:qs("videoStatus").value,
+   order:qs("videoOrder").value
+  },
+  function(data){
+
+   if(!data.ok){
+    showStatus("videoStatusBox",data.error || "保存に失敗しました",true);
+    return;
+   }
+
+   showStatus("videoStatusBox","動画を保存しました",false);
+
+  }
+ );
+
+}
+
+function saveImage(){
+
+ if(!ADMIN_PIN){
+  alert("ログインしてください");
+  return;
+ }
+
+ if(!qs("imageTitle").value.trim()){
+  alert("画像タイトルを入力してください");
+  return;
+ }
+
+ if(!qs("imageUrl").value.trim()){
+  alert("画像URLを入力してください");
+  return;
+ }
+
+ if(!selectedImageTowns.length){
+  alert("配信先町内会を選んでください");
+  return;
+ }
+
+ callGAS(
+  {
+   mode:"saveImage",
+   pin:ADMIN_PIN,
+   author:qs("author").value,
+   title:qs("imageTitle").value,
+   imageUrl:qs("imageUrl").value,
+   description:qs("imageDescription").value,
+   category:qs("imageCategory").value,
+   targets:selectedImageTowns.join(","),
+   status:qs("imageStatus").value,
+   order:qs("imageOrder").value
+  },
+  function(data){
+
+   if(!data.ok){
+    showStatus("imageStatusBox",data.error || "保存に失敗しました",true);
+    return;
+   }
+
+   showStatus("imageStatusBox","画像を保存しました",false);
+
+  }
+ );
+
+}
+
+function clearPostForm(){
+
+ [
+  "rawLine",
+  "title",
+  "summary",
+  "body",
+  "officialUrl",
+  "startDate",
+  "endDate",
+  "memo"
+ ].forEach(function(id){
+
+  qs(id).value = "";
+
+ });
+
+ selectedTowns = [];
+ renderTownButtons();
+ updatePreview();
+
+ const status =
+ qs("postStatus");
+
+ status.className = "status";
+ status.textContent = "";
+
+}
+
+function showTab(id){
+
+ document.querySelectorAll(".tabPage").forEach(function(page){
+  page.classList.remove("show");
+ });
+
+ document.querySelectorAll(".tabBtn").forEach(function(btn){
+  btn.classList.remove("active");
+ });
+
+ qs(id).classList.add("show");
+
+ const buttons =
+ document.querySelectorAll(".tabBtn");
+
+ if(id === "postTab"){
+  buttons[0].classList.add("active");
+ }
+
+ if(id === "videoTab"){
+  buttons[1].classList.add("active");
+ }
+
+ if(id === "imageTab"){
+  buttons[2].classList.add("active");
+ }
+
+ if(id === "helpTab"){
+  buttons[3].classList.add("active");
+ }
+
+}
+
+updatePreview();
+
+</script>
+
+</body>
+</html>
