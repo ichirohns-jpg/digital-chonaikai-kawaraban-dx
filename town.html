@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>デジタル町内会瓦版DX</title>
+
+<meta name="theme-color" content="#0f766e">
+
+<style>
+
+*{
+ box-sizing:border-box;
+}
+
+html{
+ scroll-behavior:smooth;
+}
+
+body{
+ margin:0;
+ font-family:
+ "Hiragino Sans",
+ "Yu Gothic",
+ "Meiryo",
+ sans-serif;
+ background:
+ linear-gradient(180deg,#ecfeff 0%,#f7fee7 100%);
+ color:#102a24;
+ line-height:1.8;
+ -webkit-text-size-adjust:100%;
+}
+
+a{
+ color:inherit;
+ text-decoration:none;
+}
+
+button{
+ font-family:inherit;
+}
+
+.wrap{
+ max-width:960px;
+ margin:auto;
+ padding:16px;
+ padding-bottom:80px;
+}
+
+.header{
+ background:
+ radial-gradient(circle at top right,rgba(250,204,21,.35),transparent 34%),
+ linear-gradient(135deg,#0f766e,#16a34a);
+ color:#fff;
+ border-radius:30px;
+ padding:24px 18px;
+ box-shadow:0 14px 34px rgba(15,118,110,.24);
+}
+
+.header h1{
+ margin:0;
+ font-size:32px;
+ line-height:1.25;
+ font-weight:900;
+}
+
+.header p{
+ margin:10px 0 0;
+ font-size:17px;
+ font-weight:850;
+ color:#ecfeff;
+}
+
+.townName{
+ display:inline-block;
+ margin-bottom:10px;
+ padding:7px 13px;
+ border-radius:999px;
+ background:rgba(255,255,255,.18);
+ border:1px solid rgba(255,255,255,.28);
+ font-weight:900;
+ color:#fef9c3;
+}
+
+.notice{
+ margin-top:14px;
+ background:#fffbeb;
+ color:#713f12;
+ border:1px solid #fde68a;
+ padding:13px;
+ border-radius:18px;
+ font-weight:850;
+}
+
+.menuGrid{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:10px;
+ margin-top:16px;
+}
+
+.menuBtn{
+ display:block;
+ width:100%;
+ border:0;
+ border-radius:20px;
+ padding:16px;
+ background:#fff;
+ color:#0f766e;
+ font-size:18px;
+ font-weight:900;
+ text-align:center;
+ box-shadow:0 8px 22px rgba(15,118,110,.13);
+ border:2px solid #ccfbf1;
+}
+
+.menuBtn.important{
+ background:#facc15;
+ color:#422006;
+ border-color:#fde047;
+}
+
+.card{
+ margin-top:18px;
+ background:#fff;
+ border-radius:28px;
+ padding:18px;
+ box-shadow:0 10px 28px rgba(15,118,110,.12);
+ border:1px solid #ccfbf1;
+}
+
+.card h2{
+ margin:0 0 12px;
+ color:#0f766e;
+ font-size:26px;
+ line-height:1.3;
+ font-weight:900;
+}
+
+.cardLead{
+ margin:0;
+ color:#475569;
+ font-weight:850;
+}
+
+.postList{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:14px;
+ margin-top:14px;
+}
+
+.post{
+ background:#f8fafc;
+ border:2px solid #e2e8f0;
+ border-radius:26px;
+ padding:16px;
+}
+
+.post.important{
+ background:#fffbeb;
+ border-color:#facc15;
+}
+
+.post.disaster{
+ background:#fef2f2;
+ border-color:#fecaca;
+}
+
+.badge{
+ display:inline-block;
+ padding:5px 10px;
+ border-radius:999px;
+ background:#ccfbf1;
+ color:#134e4a;
+ font-size:13px;
+ font-weight:900;
+ margin-bottom:8px;
+}
+
+.badge.disaster{
+ background:#fee2e2;
+ color:#991b1b;
+}
+
+.badge.important{
+ background:#facc15;
+ color:#422006;
+}
+
+.postTitle{
+ margin:0;
+ color:#0f766e;
+ font-size:27px;
+ line-height:1.35;
+ font-weight:900;
+}
+
+.postDate{
+ margin-top:6px;
+ color:#64748b;
+ font-size:15px;
+ font-weight:850;
+}
+
+.summary{
+ margin-top:12px;
+ background:#ecfeff;
+ border-left:7px solid #14b8a6;
+ border-radius:16px;
+ padding:14px;
+ color:#134e4a;
+ font-size:19px;
+ line-height:1.75;
+ font-weight:900;
+ white-space:pre-wrap;
+}
+
+.bodyText{
+ margin-top:14px;
+ color:#102a24;
+ font-size:20px;
+ line-height:1.9;
+ font-weight:780;
+ white-space:pre-wrap;
+}
+
+.linkBtn{
+ display:block;
+ margin-top:14px;
+ padding:14px 16px;
+ border-radius:18px;
+ background:#2563eb;
+ color:#fff;
+ font-size:17px;
+ font-weight:900;
+ text-align:center;
+ word-break:break-word;
+}
+
+.imageGrid,
+.videoGrid{
+ display:grid;
+ grid-template-columns:1fr;
+ gap:14px;
+ margin-top:14px;
+}
+
+.imageCard,
+.videoCard{
+ background:#f8fafc;
+ border:2px solid #e2e8f0;
+ border-radius:26px;
+ padding:14px;
+}
+
+.imageCard img{
+ width:100%;
+ display:block;
+ border-radius:20px;
+ background:#e2e8f0;
+}
+
+.imageTitle,
+.videoTitle{
+ margin:10px 0 0;
+ color:#0f766e;
+ font-size:22px;
+ line-height:1.35;
+ font-weight:900;
+}
+
+.imageDesc,
+.videoDesc{
+ margin:8px 0 0;
+ color:#475569;
+ font-size:17px;
+ font-weight:780;
+}
+
+.videoFrame{
+ position:relative;
+ width:100%;
+ padding-top:56.25%;
+ border-radius:20px;
+ overflow:hidden;
+ background:#000;
+}
+
+.videoFrame iframe{
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ border:0;
+}
+
+.empty{
+ margin-top:14px;
+ padding:18px;
+ border-radius:22px;
+ background:#f1f5f9;
+ color:#64748b;
+ font-weight:850;
+ text-align:center;
+}
+
+.footer{
+ margin-top:26px;
+ text-align:center;
+ color:#64748b;
+ font-size:14px;
+ font-weight:850;
+}
+
+.footerBox{
+ margin-top:14px;
+ padding:14px;
+ border-radius:22px;
+ background:#fff;
+ border:1px solid #ccfbf1;
+}
+
+.loading{
+ padding:22px;
+ text-align:center;
+ color:#0f766e;
+ font-weight:900;
+}
+
+.bottomNav{
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:0;
+ background:rgba(255,255,255,.96);
+ border-top:1px solid #ccfbf1;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ box-shadow:0 -8px 24px rgba(15,118,110,.16);
+}
+
+.bottomNav a{
+ padding:9px 4px 8px;
+ text-align:center;
+ color:#0f766e;
+ font-size:12px;
+ font-weight:900;
+}
+
+.bottomNav span{
+ display:block;
+ font-size:21px;
+ line-height:1.1;
+}
+
+@media (min-width:760px){
+
+ .menuGrid{
+  grid-template-columns:repeat(4,1fr);
+ }
+
+ .imageGrid,
+ .videoGrid{
+  grid-template-columns:repeat(2,1fr);
+ }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<header class="header">
+ <div id="townName" class="townName">町内会瓦版</div>
+
+ <h1>デジタル町内会瓦版DX</h1>
+
+ <p>
+  市役所LINE情報や防災情報を、見やすい大きな文字で確認できます。
+ </p>
+</header>
+
+<div class="notice">
+ 紙の回覧板は今まで通りです。このページは、見逃し防止・再確認・大きな文字で読むための補助ページです。
+</div>
+
+<nav class="menuGrid">
+ <a class="menuBtn important" href="#city">市役所情報</a>
+ <a class="menuBtn" href="#disaster">防災情報</a>
+ <a class="menuBtn" href="#images">画像</a>
+ <a class="menuBtn" href="#videos">動画</a>
+</nav>
+
+<section id="city" class="card">
+ <h2>市役所からのお知らせ</h2>
+ <p class="cardLead">市役所LINEなどの公式情報を、町内会向けに見やすく整理して掲載します。</p>
+ <div id="cityPosts" class="postList">
+  <div class="loading">読み込み中...</div>
+ </div>
+</section>
+
+<section id="disaster" class="card">
+ <h2>防災情報</h2>
+ <p class="cardLead">避難場所、ハザードマップ、災害時のお知らせなど、大事な情報をまとめます。</p>
+ <div id="disasterPosts" class="postList">
+  <div class="loading">読み込み中...</div>
+ </div>
+</section>
+
+<section id="life" class="card">
+ <h2>暮らしのお知らせ</h2>
+ <p class="cardLead">ごみ、健康、福祉、子育て、道路工事、イベントなどのお知らせです。</p>
+ <div id="lifePosts" class="postList">
+  <div class="loading">読み込み中...</div>
+ </div>
+</section>
+
+<section id="local" class="card">
+ <h2>地域のお知らせ</h2>
+ <p class="cardLead">地域活動やまち歩きなど、公式情報とは分けて掲載する地域のお知らせです。</p>
+ <div id="localPosts" class="postList">
+  <div class="loading">読み込み中...</div>
+ </div>
+</section>
+
+<section id="images" class="card">
+ <h2>画像で見るお知らせ</h2>
+ <p class="cardLead">チラシ画像や告知画像を見やすく表示します。</p>
+ <div id="imageList" class="imageGrid">
+  <div class="loading">読み込み中...</div>
+ </div>
+</section>
+
+<section id="videos" class="card">
+ <h2>お楽しみ動画</h2>
+ <p class="cardLead">病院の待ち時間や、ちょっとした時間に見られるYouTube動画です。</p>
+ <div id="videoList" class="videoGrid">
+  <div class="loading">読み込み中...</div>
+ </div>
+</section>
+
+<footer class="footer">
+ <div class="footerBox">
+  デジタル町内会瓦版DX<br>
+  制作・運用協力：山口貞一郎
+ </div>
+</footer>
+
+</div>
+
+<nav class="bottomNav">
+ <a href="#city"><span>📢</span>市役所</a>
+ <a href="#disaster"><span>🚨</span>防災</a>
+ <a href="#images"><span>🖼️</span>画像</a>
+ <a href="#videos"><span>▶️</span>動画</a>
+</nav>
+
+<script>
+
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycby1L1-dHmf_5GZkIRZcr-pp_tBxkEAe-cvQrQzkbYP_D_CbbWAsPgR4kuTXoIjlmOsgeA/exec";
+
+let TOWN_ID =
+getParam("town") || "test";
+
+function getParam(name){
+
+ const params =
+ new URLSearchParams(location.search);
+
+ return params.get(name) || "";
+
+}
+
+function qs(id){
+ return document.getElementById(id);
+}
+
+function callGAS(params,callback){
+
+ const url =
+ GAS_URL +
+ "?" +
+ new URLSearchParams(params).toString();
+
+ fetch(url)
+ .then(function(res){
+  return res.json();
+ })
+ .then(function(data){
+  callback(data);
+ })
+ .catch(function(err){
+  callback({
+   ok:false,
+   error:String(err)
+  });
+ });
+
+}
+
+function escapeHtml(text){
+
+ return String(text || "")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
+
+}
+
+function setTownName(){
+
+ callGAS(
+  {
+   mode:"getTowns",
+   includeAll:"1"
+  },
+  function(data){
+
+   if(!data.ok){
+    qs("townName").textContent =
+    "町内会瓦版";
+    return;
+   }
+
+   const towns =
+   data.towns || [];
+
+   const town =
+   towns.find(function(item){
+    return String(item.townId) === String(TOWN_ID);
+   });
+
+   if(town){
+    qs("townName").textContent =
+    town["町内会名"] || "町内会瓦版";
+   }else{
+    qs("townName").textContent =
+    "町内会瓦版";
+   }
+
+  }
+ );
+
+}
+
+function loadPosts(){
+
+ callGAS(
+  {
+   mode:"getPosts",
+   town:TOWN_ID
+  },
+  function(data){
+
+   if(!data.ok){
+    showError("cityPosts","お知らせを読み込めませんでした");
+    showError("disasterPosts","防災情報を読み込めませんでした");
+    showError("lifePosts","暮らしのお知らせを読み込めませんでした");
+    showError("localPosts","地域のお知らせを読み込めませんでした");
+    return;
+   }
+
+   const posts =
+   data.posts || [];
+
+   renderPosts(
+    "cityPosts",
+    posts.filter(isCityPost)
+   );
+
+   renderPosts(
+    "disasterPosts",
+    posts.filter(isDisasterPost)
+   );
+
+   renderPosts(
+    "lifePosts",
+    posts.filter(isLifePost)
+   );
+
+   renderPosts(
+    "localPosts",
+    posts.filter(isLocalPost)
+   );
+
+  }
+ );
+
+}
+
+function isCityPost(post){
+
+ return String(post["分類"] || "") === "市役所からのお知らせ";
+
+}
+
+function isDisasterPost(post){
+
+ return String(post["分類"] || "") === "防災情報" ||
+ String(post["重要度"] || "") === "緊急";
+
+}
+
+function isLocalPost(post){
+
+ return String(post["分類"] || "") === "地域のお知らせ";
+
+}
+
+function isLifePost(post){
+
+ const cat =
+ String(post["分類"] || "");
+
+ return [
+  "ごみ",
+  "健康・福祉",
+  "子育て",
+  "道路・工事",
+  "イベント",
+  "重要なお知らせ"
+ ].indexOf(cat) !== -1;
+
+}
+
+function renderPosts(id,posts){
+
+ const box =
+ qs(id);
+
+ if(!box){
+  return;
+ }
+
+ if(!posts.length){
+  box.innerHTML =
+  '<div class="empty">現在、表示するお知らせはありません。</div>';
+  return;
+ }
+
+ box.innerHTML =
+ posts.map(function(post){
+
+  const category =
+  String(post["分類"] || "お知らせ");
+
+  const priority =
+  String(post["重要度"] || "通常");
+
+  const isDisaster =
+  category === "防災情報" ||
+  priority === "緊急";
+
+  const isImportant =
+  priority === "重要" ||
+  priority === "緊急";
+
+  const className =
+  "post" +
+  (isDisaster ? " disaster" : "") +
+  (isImportant ? " important" : "");
+
+  const badgeClass =
+  "badge" +
+  (isDisaster ? " disaster" : "") +
+  (isImportant ? " important" : "");
+
+  const url =
+  String(post["市公式URL"] || "").trim();
+
+  return [
+   '<article class="' + className + '">',
+    '<div class="' + badgeClass + '">' + escapeHtml(category) + '</div>',
+    '<h3 class="postTitle">' + escapeHtml(post["タイトル"]) + '</h3>',
+    '<div class="postDate">' + escapeHtml(post["日時"]) + '</div>',
+    post["要点"] ? '<div class="summary">' + escapeHtml(post["要点"]) + '</div>' : '',
+    post["本文"] ? '<div class="bodyText">' + escapeHtml(post["本文"]) + '</div>' : '',
+    url ? '<a class="linkBtn" href="' + escapeHtml(url) + '" target="_blank" rel="noopener">詳しくはこちら</a>' : '',
+   '</article>'
+  ].join("");
+
+ }).join("");
+
+}
+
+function loadImages(){
+
+ callGAS(
+  {
+   mode:"getImages",
+   town:TOWN_ID
+  },
+  function(data){
+
+   const box =
+   qs("imageList");
+
+   if(!data.ok){
+    box.innerHTML =
+    '<div class="empty">画像を読み込めませんでした。</div>';
+    return;
+   }
+
+   const images =
+   data.images || [];
+
+   if(!images.length){
+    box.innerHTML =
+    '<div class="empty">現在、表示する画像はありません。</div>';
+    return;
+   }
+
+   box.innerHTML =
+   images.map(function(item){
+
+    const url =
+    String(item["画像URL"] || "").trim();
+
+    return [
+     '<article class="imageCard">',
+      url ? '<img src="' + escapeHtml(url) + '" alt="' + escapeHtml(item["画像タイトル"]) + '">' : '',
+      '<h3 class="imageTitle">' + escapeHtml(item["画像タイトル"]) + '</h3>',
+      item["説明"] ? '<p class="imageDesc">' + escapeHtml(item["説明"]) + '</p>' : '',
+     '</article>'
+    ].join("");
+
+   }).join("");
+
+  }
+ );
+
+}
+
+function loadVideos(){
+
+ callGAS(
+  {
+   mode:"getVideos",
+   town:TOWN_ID
+  },
+  function(data){
+
+   const box =
+   qs("videoList");
+
+   if(!data.ok){
+    box.innerHTML =
+    '<div class="empty">動画を読み込めませんでした。</div>';
+    return;
+   }
+
+   const videos =
+   data.videos || [];
+
+   if(!videos.length){
+    box.innerHTML =
+    '<div class="empty">現在、表示する動画はありません。</div>';
+    return;
+   }
+
+   box.innerHTML =
+   videos.map(function(item){
+
+    const youtubeId =
+    String(item["YouTube ID"] || "").trim();
+
+    return [
+     '<article class="videoCard">',
+      youtubeId ? '<div class="videoFrame"><iframe src="https://www.youtube.com/embed/' + escapeHtml(youtubeId) + '" allowfullscreen></iframe></div>' : '',
+      '<h3 class="videoTitle">' + escapeHtml(item["動画タイトル"]) + '</h3>',
+      item["説明"] ? '<p class="videoDesc">' + escapeHtml(item["説明"]) + '</p>' : '',
+     '</article>'
+    ].join("");
+
+   }).join("");
+
+  }
+ );
+
+}
+
+function showError(id,message){
+
+ const box =
+ qs(id);
+
+ if(box){
+  box.innerHTML =
+  '<div class="empty">' + escapeHtml(message) + '</div>';
+ }
+
+}
+
+setTownName();
+loadPosts();
+loadImages();
+loadVideos();
+
+</script>
+
+</body>
+</html>
