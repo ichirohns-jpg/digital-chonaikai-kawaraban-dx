@@ -9,6 +9,29 @@
 <meta name="theme-color" content="#0f766e">
 <meta name="description" content="市役所LINE情報や防災情報を、町内会ごとの見やすい瓦版として届けるデジタル町内会DXです。">
 
+<link rel="icon" type="image/png" href="images/apple-touch-icon.png">
+<link rel="shortcut icon" type="image/png" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+<meta name="apple-mobile-web-app-title" content="町内会瓦版DX">
+<meta name="application-name" content="町内会瓦版DX">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta property="og:site_name" content="デジタル町内会瓦版DX">
+<meta property="og:title" content="デジタル町内会瓦版DX">
+<meta property="og:description" content="市役所LINE情報や防災情報を、町内会ごとの見やすい瓦版として届けます。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ichirohns-jpg.github.io/digital-chonaikai-kawaraban-dx/">
+<meta property="og:image" content="https://ichirohns-jpg.github.io/digital-chonaikai-kawaraban-dx/images/main-banner.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="デジタル町内会瓦版DX">
+<meta name="twitter:description" content="市役所LINE情報や防災情報を、町内会ごとの見やすい瓦版として届けます。">
+<meta name="twitter:image" content="https://ichirohns-jpg.github.io/digital-chonaikai-kawaraban-dx/images/main-banner.png">
+
 <style>
 
 *{
@@ -39,6 +62,10 @@ a{
  text-decoration:none;
 }
 
+img{
+ max-width:100%;
+}
+
 .wrap{
  max-width:960px;
  margin:auto;
@@ -47,13 +74,26 @@ a{
 }
 
 .hero{
+ overflow:hidden;
  background:
  radial-gradient(circle at top right,rgba(250,204,21,.38),transparent 34%),
  linear-gradient(135deg,#0f766e,#16a34a);
  color:#fff;
  border-radius:32px;
- padding:28px 20px;
  box-shadow:0 14px 36px rgba(15,118,110,.24);
+}
+
+.heroImage{
+ background:#0f766e;
+}
+
+.heroImage img{
+ width:100%;
+ display:block;
+}
+
+.heroBody{
+ padding:26px 20px 28px;
 }
 
 .badge{
@@ -195,8 +235,8 @@ a{
 
 @media (min-width:760px){
 
- .hero{
-  padding:38px 32px;
+ .heroBody{
+  padding:34px 32px 38px;
  }
 
  .hero h1{
@@ -221,17 +261,25 @@ a{
 <div class="wrap">
 
 <section class="hero">
- <div class="badge">
-  紙の回覧板を補助するデジタル瓦版
+
+ <div class="heroImage">
+  <img src="images/main-banner.png" alt="デジタル町内会瓦版DX">
  </div>
 
- <h1>
-  デジタル町内会瓦版DX
- </h1>
+ <div class="heroBody">
+  <div class="badge">
+   紙の回覧板を補助するデジタル瓦版
+  </div>
 
- <p>
-  市役所LINE情報や防災情報を、町内会ごとの見やすい瓦版として届けます。
- </p>
+  <h1>
+   デジタル町内会瓦版DX
+  </h1>
+
+  <p>
+   市役所LINE情報や防災情報を、町内会ごとの見やすい瓦版として届けます。
+  </p>
+ </div>
+
 </section>
 
 <section class="card">
